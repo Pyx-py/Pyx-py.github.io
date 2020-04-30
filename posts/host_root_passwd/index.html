@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en-us">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<meta name="theme-color" content="#494f5c">
+	<meta name="msapplication-TileColor" content="#494f5c">
+<meta itemprop="name" content="Host_root_passwd">
+<meta itemprop="description" content="记一次主机root密码修改 有个需要修改远程主机root密码的需求，但是通过passwd来修改的话，就需要程序和主机进行shell的交互，比较">
+<meta itemprop="datePublished" content="2020-04-29T16:09:27&#43;08:00" />
+<meta itemprop="dateModified" content="2020-04-29T16:09:27&#43;08:00" />
+<meta itemprop="wordCount" content="927">
+
+
+
+<meta itemprop="keywords" content="tech," /><meta property="og:title" content="Host_root_passwd" />
+<meta property="og:description" content="记一次主机root密码修改 有个需要修改远程主机root密码的需求，但是通过passwd来修改的话，就需要程序和主机进行shell的交互，比较" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://pyx-py.github.io/posts/host_root_passwd/" />
+<meta property="article:published_time" content="2020-04-29T16:09:27+08:00" />
+<meta property="article:modified_time" content="2020-04-29T16:09:27+08:00" />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Host_root_passwd"/>
+<meta name="twitter:description" content="记一次主机root密码修改 有个需要修改远程主机root密码的需求，但是通过passwd来修改的话，就需要程序和主机进行shell的交互，比较"/>
+
+	<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+	<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+	<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+	<link rel="manifest" href="/site.webmanifest">
+	<link rel="mask-icon" href="/safari-pinned-tab.svg" color="">
+	<link rel="shortcut icon" href="/favicon.ico">
+
+	<title>Host_root_passwd</title>
+	<link rel="stylesheet" href="https://pyx-py.github.io/css/style.min.657bcb7af31123e4156b1a3d2ff60a636717e54ead74f882136b5114cf72b55e.css" integrity="sha256-ZXvLevMRI+QVaxo9L/YKY2cX5U6tdPiCE2tRFM9ytV4=" crossorigin="anonymous">
+	
+</head>
+
+<body id="page">
+	
+	<header id="site-header" class="animated slideInUp faster">
+		<div class="hdr-wrapper section-inner">
+			<div class="hdr-left">
+				<div class="site-branding">
+					<a href="https://pyx-py.github.io/">Y&#39;s</a>
+				</div>
+				<nav class="site-nav hide-in-mobile">
+					
+				<a href="https://pyx-py.github.io/posts/">文章</a>
+				<a href="https://pyx-py.github.io/tags/">标签</a>
+				<a href="https://pyx-py.github.io/category/">类型</a>
+				<a href="https://pyx-py.github.io/about/">关于</a>
+
+				</nav>
+			</div>
+			<div class="hdr-right hdr-icons">
+				<span class="hdr-social hide-in-mobile"><a href="https://github.com/Pyx-py" target="_blank" rel="noopener me" title="Github"><svg xmlns="http://www.w3.org/2000/svg" class="feather" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path></svg></a></span><button id="menu-btn" class="hdr-btn" title="Menu"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-menu"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg></button>
+			</div>
+		</div>
+	</header>
+	<div id="mobile-menu" class="animated fast">
+		<ul>
+			<li><a href="https://pyx-py.github.io/posts/">文章</a></li>
+			<li><a href="https://pyx-py.github.io/tags/">标签</a></li>
+			<li><a href="https://pyx-py.github.io/category/">类型</a></li>
+			<li><a href="https://pyx-py.github.io/about/">关于</a></li>
+		</ul>
+	</div>
+
+
+	<main class="site-main section-inner animated fadeIn faster">
+		<article class="thin">
+			<header class="post-header">
+				<div class="post-meta"><span>Apr 29, 2020</span></div>
+				<h1>Host_root_passwd</h1>
+			</header>
+			<div class="content">
+				<h1 id="记一次主机root密码修改">记一次主机root密码修改<a href="#记一次主机root密码修改" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h1>
+<p>    有个需要修改远程主机root密码的需求，但是通过passwd来修改的话，就需要程序和主机进行shell的交互，比较麻烦，于是找了条命令:</p>
+<pre><code>echo password | passwd --stdin root
+</code></pre>
+<p>    可以直接在root用户下修改日root密码，开始都没啥问题，直到输入了一个带<code>$</code>符号的密码，发现修改之后的密码和实际上的对不上了，意识到echo语句里面很多特殊符号是有含义的，于是开始对各种符号进行测试总结。</p>
+<p>    通过这行命令修改主机root密码的可用特殊字符:<br>
+<code>@</code> <code>%</code> <code>#</code> <code>^</code>  <code>*</code> <code>-</code> <code>=</code> <code>_</code> <code>+</code> <code>?</code> <code>/</code> <code>,</code> <code>.</code> <code>:</code><br>
+    不可用的的特殊字符包括：<br>
+<code>!</code> &ndash;结果：密码会直接修改不成功<br>
+<code>$</code> &ndash;结果：新密码能够修改成功，但是修改后的密码完全不符合预期，如果<code>$</code>后面接字母，比如<code>qwer$qwer</code>, 那么会去掉<code>$</code>和他之后的部分，真正更新的密码会是qwer；如果<code>$</code>后面接数字，比如<code>qwer$1234</code>, 那么会依照shell的语法，取对应数字下标的命令行参数，但是单独这行命令是没有定义过命令行参数的，所以<code>$1</code>表示为空被去掉了，实际上密码变成了<code>qwer234</code><br>
+<code>&amp;</code>&ndash;结果：密码修改不成功，比如密码是<code>qwer&amp;1234</code>, &amp;符号会作为将echo指令后台运行的命令，<code>qwer</code>会被打印，<code>1234</code>将作为新的一行命令，当然运行不了<br>
+<code>(</code>和<code>)</code>&ndash;结果：密码修改不成功<br>
+<code>\</code>&ndash;结果：密码修改成功但是不符合预期，<code>\</code>会作为转义符，后面接不同的字符会有不同的含义，至少和预期的密码不一样<br>
+<code>;</code>&ndash;结果：密码修改不成功，和<code>&amp;</code>类似，echo命令运行完成打印<code>qwer</code>,<code>1234</code>作为新命令无法运行<br>
+<code>&lt;</code>和<code>&gt;</code>&ndash;结果：密码修改不成功，<code>&lt;</code>和<code>&gt;</code>会作为输入输出重定向符号使用，可是<code>1234</code>没有含义，内容不能输出也不能输入</p>
+<hr>
+<p>    至此大部分能用到的特殊符号已经测试过了，没有测试过的我也不打算测了，那么解决办法有两种：</p>
+<blockquote>
+<ol>
+<li>在程序里边把捕捉密码中的不可用特殊字符，返回错误信息</li>
+<li>使用<code>echo 'password' | passwd --stdin root</code>,将密码用'&lsquo;包括起来，这样即便密码中含有特殊字符也能正常使用，但是这种办法需要将含有&rsquo;单引号的密码屏蔽掉，因为如果这样的<code>pass'word</code>的密码也是不成功的</li>
+</ol>
+</blockquote>
+
+			</div>
+			<hr class="post-end">
+			<footer class="post-info">
+				<p>
+					<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-tag meta-icon"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7" y2="7"></line></svg><span class="tag"><a href="https://pyx-py.github.io/tags/tech">tech</a></span>
+				</p>
+				<p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file-text"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>927 Words</p>
+				<p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-calendar"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>2020-04-29 16:09 &#43;0800</p>
+			</footer>
+		</article>
+		<div class="post-nav thin">
+		</div>
+		<div id="comments" class="thin">
+<div id="disqus_thread"></div>
+<script type="application/javascript">
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "Pyx" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+	</main>
+
+	<footer id="site-footer" class="section-inner thin animated fadeIn faster">
+		<p>&copy; 2020 <a href="https://pyx-py.github.io/">Pyx</a> &#183; <a href="https://creativecommons.org/licenses/by-nc/4.0/" target="_blank" rel="noopener">CC BY-NC 4.0</a></p>
+		<p>
+			Made with <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> &#183; Theme <a href="https://github.com/Track3/hermit" target="_blank" rel="noopener">Hermit</a> &#183; <a href="https://pyx-py.github.io/posts/index.xml" target="_blank" title="rss"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-rss"><path d="M4 11a9 9 0 0 1 9 9"></path><path d="M4 4a16 16 0 0 1 16 16"></path><circle cx="5" cy="19" r="1"></circle></svg></a>
+		</p>
+	</footer>
+
+
+
+	<script src="https://pyx-py.github.io/js/bundle.min.4a9a0ac3d2217822c7865b4161e6c2a71de1d70492264337755427898dd718f6.js" integrity="sha256-SpoKw9IheCLHhltBYebCpx3h1wSSJkM3dVQniY3XGPY=" crossorigin="anonymous"></script>
+	
+
+</body>
+
+</html>
