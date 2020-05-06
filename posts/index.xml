@@ -6,8 +6,80 @@
 		<generator>Hugo -- gohugo.io</generator>
 		<language>en-us</language>
 		<copyright>This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.</copyright>
-		<lastBuildDate>Wed, 29 Apr 2020 16:09:27 +0800</lastBuildDate>
+		<lastBuildDate>Wed, 06 May 2020 10:21:43 +0800</lastBuildDate>
 		<atom:link href="https://pyx-py.github.io/posts/index.xml" rel="self" type="application/rss+xml" />
+		
+		<item>
+			<title>通过hugo创建博客网站</title>
+			<link>https://pyx-py.github.io/posts/%E9%80%9A%E8%BF%87hugo%E5%88%9B%E5%BB%BA%E5%8D%9A%E5%AE%A2%E7%BD%91%E7%AB%99/</link>
+			<pubDate>Wed, 06 May 2020 10:21:43 +0800</pubDate>
+			
+			<guid>https://pyx-py.github.io/posts/%E9%80%9A%E8%BF%87hugo%E5%88%9B%E5%BB%BA%E5%8D%9A%E5%AE%A2%E7%BD%91%E7%AB%99/</guid>
+			<description>环境 ubuntu18.04 下载hugo 推荐通过hugo的github去下载对应的releasehttps://github.com/gohugoio/hugo/</description>
+			<content type="html"><![CDATA[<h2 id="环境">环境</h2>
+<p>ubuntu18.04</p>
+<h2 id="下载hugo">下载hugo</h2>
+<p>推荐通过hugo的github去下载对应的release<code>https://github.com/gohugoio/hugo/releases</code></p>
+<p>执行<code>hugo version</code>显示版本号，无报错即是安装成功</p>
+<h2 id="生成博客目录">生成博客目录</h2>
+<p>例如在/app目录下</p>
+<p>执行<code>hugo new site xblog</code>,xblog指代博客名称</p>
+<p><code>cd xblog</code></p>
+<p>hugo会在此目录下生成以下的文件夹和config.toml文件：</p>
+<blockquote>
+<p>archetypes：设定自定义的头文件
+content：存放网站内容页，也就是博客文章，.md格式
+data：存放网站所要用到的一些配置、数据文件、自定义模板，toml/yaml/json格式
+layouts：存放的是网站的模板文件，渲染content目录下的内容
+static：存放js/css/img等静态资源
+themes：存放主题相关文件</p>
+</blockquote>
+<p>切换到themes目录下，执行<code>git clone https://github.com/Track3/hermit.git</code>可以下载该主题到themes目录
+hermit是其中的一款主题，需要选择更多的主题可以到<a href="https://themes.gohugo.io/">https://themes.gohugo.io/</a>进行选择</p>
+<p>使用此主题需要将config.toml配置文件替换为主题包内的config.toml文件(具体的各个配置项和用法可以去<a href="https://github.com/Track3/hermit">https://github.com/Track3/hermit</a>和<a href="https://gohugo.io/documentation/">https://gohugo.io/documentation/</a>进行查看)</p>
+<p>创建posts目录并生成第一篇文章,执行<code>hugo new posts/first_post.md</code>,会在content目录下生成posts文件夹和内部的md文件</p>
+<p>执行<code>hugo server -D</code>(-D代表会显示草稿, md文件中头部配置中的draft: true代表草稿模式,完成文章后可改为false), 打开<code>http://localhost:1313/</code>查看站点预览效果</p>
+<p>预览完后觉得效果可以,就可以生成站点的静态目录</p>
+<p>在/app/xblog下执行hugo命令,会生成public目录,其中就包括整个静态站点的所有文件</p>
+<h2 id="上传github生成站点">上传github生成站点</h2>
+<p>在github上新建一个名叫<code>xxx.github.io</code>的仓库(必须以github.io结尾,xxx自定义)</p>
+<p>修改config.toml文件中的baseURL为此仓库地址<code>https://xxx.github.io</code></p>
+<p>进入到刚才生成的public目录下执行</p>
+<pre><code>git init
+git add .
+git commit -m &quot;xxx&quot;
+git remote add origin https://github.com/xxx/xxx.github.io.git
+git push -u origin master
+</code></pre><p>此时访问<code>https://xxx.github.io/</code>就可以看到和你预览效果同样的静态博客站点了</p>
+<h2 id="注意事项">注意事项</h2>
+<p>hermit默认带的评论系统是Disqus,但是由于某些原因,Disqus在国内是无法访问的,所以要对评论模块进行替换</p>
+<h3 id="utterances">utterances</h3>
+<p>这个是基于github issue的一个评论工具,轻量简单且好看</p>
+<p>要安装utterances首先需要去自己的github app进行注册,进入<a href="https://utteranc.es/">https://utteranc.es/</a>按照文档进行配置</p>
+<p>选择对应的仓库,可以选择全部的仓库,但是建议只选择一个</p>
+<p><img src="/utterances.png" alt="选择相应的仓库"></p>
+<p>配置好utterances之后,utterances官方文档上给出了一段script标签代码</p>
+<div class="highlight"><pre class="chroma"><code class="language-js" data-lang="js"><span class="o">&lt;</span><span class="nx">script</span> <span class="nx">src</span><span class="o">=</span><span class="s2">&#34;https://utteranc.es/client.js&#34;</span>
+        <span class="nx">repo</span><span class="o">=</span><span class="s2">&#34;[ENTER REPO HERE]&#34;</span>
+        <span class="nx">issue</span><span class="o">-</span><span class="nx">term</span><span class="o">=</span><span class="s2">&#34;pathname&#34;</span>
+        <span class="nx">theme</span><span class="o">=</span><span class="s2">&#34;github-light&#34;</span>
+        <span class="nx">crossorigin</span><span class="o">=</span><span class="s2">&#34;anonymous&#34;</span>
+        <span class="nx">async</span><span class="o">&gt;</span>
+<span class="o">&lt;</span><span class="err">/script&gt;</span>
+</code></pre></div><p>将这一段代码替换原本的评论部分的代码,以hermit为例</p>
+<p>找到hermit文件夹下的/hermit/layouts/posts/single.html打开会发现里面有这样的一段html</p>
+<div class="highlight"><pre class="chroma"><code class="language-html" data-lang="html"><span class="p">&lt;</span><span class="nt">div</span> <span class="na">id</span><span class="o">=</span><span class="s">&#34;comments&#34;</span> <span class="na">class</span><span class="o">=</span><span class="s">&#34;thin&#34;</span><span class="p">&gt;</span>
+	{{- partial &#34;comments.html&#34; . -}}
+<span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+</code></pre></div><p>这个就是文章的评论部分对应的代码了,但是中间还是引用的其他文件,那按照<code>{{- partial &quot;comments.html&quot; . -}}</code>的提示接着找,发现了<code>/hermit/layouts/partials/comments.html</code>文件,其中的内容是这样的</p>
+<pre><code>{{- if .Site.DisqusShortname }}
+{{ template &quot;_internal/disqus.html&quot; . }}
+{{- end }}
+</code></pre><p>意思是只有在config.toml配置文件中添加了DisqusShortname选项,那么才会开启评论系统,可以看到默认的就是Disqus,但是我们不用管他写了啥,只要把其中的内容替换为上面的script标签代码即可,替换完成后在进行hugo命令生成新的public,在上传到github部署后,你的xxx.github.io的网站就可以看到新的评论系统了</p>
+<p>好了,个人静态博客的搭建暂时完成,如果想接着对网站进行其他的配置,可能需要对hugo的官方文档进行深入的了解</p>
+<h4 id="peace">peace</h4>
+]]></content>
+		</item>
 		
 		<item>
 			<title>Host_root_passwd</title>

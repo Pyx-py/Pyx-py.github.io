@@ -3,6 +3,26 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
+    <loc>https://pyx-py.github.io/posts/</loc>
+    <lastmod>2020-05-06T10:21:43+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://pyx-py.github.io/tags/</loc>
+    <lastmod>2020-05-06T10:21:43+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://pyx-py.github.io/tags/%E4%B8%AA%E4%BA%BA%E7%AB%99/</loc>
+    <lastmod>2020-05-06T10:21:43+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://pyx-py.github.io/posts/%E9%80%9A%E8%BF%87hugo%E5%88%9B%E5%BB%BA%E5%8D%9A%E5%AE%A2%E7%BD%91%E7%AB%99/</loc>
+    <lastmod>2020-05-06T10:21:43+08:00</lastmod>
+  </url>
+  
+  <url>
     <loc>https://pyx-py.github.io/</loc>
     <lastmod>2020-04-29T17:39:00+08:00</lastmod>
   </url>
@@ -14,16 +34,6 @@
   
   <url>
     <loc>https://pyx-py.github.io/posts/host_root_passwd/</loc>
-    <lastmod>2020-04-29T16:09:27+08:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://pyx-py.github.io/posts/</loc>
-    <lastmod>2020-04-29T16:09:27+08:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://pyx-py.github.io/tags/</loc>
     <lastmod>2020-04-29T16:09:27+08:00</lastmod>
   </url>
   
