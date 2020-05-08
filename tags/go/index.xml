@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>go on Y&#39;s</title>
+    <link>https://pyx-py.github.io/tags/go/</link>
+    <description>Recent content in go on Y&#39;s</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.</copyright>
+    <lastBuildDate>Thu, 07 May 2020 20:45:47 +0800</lastBuildDate>
+    
+	<atom:link href="https://pyx-py.github.io/tags/go/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>看看go的sync.once</title>
+      <link>https://pyx-py.github.io/posts/%E7%9C%8B%E7%9C%8Bgo%E7%9A%84sync.once/</link>
+      <pubDate>Thu, 07 May 2020 20:45:47 +0800</pubDate>
+      
+      <guid>https://pyx-py.github.io/posts/%E7%9C%8B%E7%9C%8Bgo%E7%9A%84sync.once/</guid>
+      <description>用途 once保证传入内部的函数只会执行一次 once源码 type Once struct { // done indicates whether the action has been performed. // It is first in the struct because it is used in the hot path. // The hot path is inlined at every call site. // Placing done first allows</description>
+    </item>
+    
+  </channel>
+</rss>

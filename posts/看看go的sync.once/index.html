@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en-us">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<meta name="theme-color" content="#494f5c">
+	<meta name="msapplication-TileColor" content="#494f5c">
+<meta itemprop="name" content="看看go的sync.once">
+<meta itemprop="description" content="用途 once保证传入内部的函数只会执行一次 once源码 type Once struct { // done indicates whether the action has been performed. // It is first in the struct because it is used in the hot path. // The hot path is inlined at every call site. // Placing done first allows">
+<meta itemprop="datePublished" content="2020-05-07T20:45:47&#43;08:00" />
+<meta itemprop="dateModified" content="2020-05-07T20:45:47&#43;08:00" />
+<meta itemprop="wordCount" content="574">
+
+
+
+<meta itemprop="keywords" content="go," /><meta property="og:title" content="看看go的sync.once" />
+<meta property="og:description" content="用途 once保证传入内部的函数只会执行一次 once源码 type Once struct { // done indicates whether the action has been performed. // It is first in the struct because it is used in the hot path. // The hot path is inlined at every call site. // Placing done first allows" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://pyx-py.github.io/posts/%E7%9C%8B%E7%9C%8Bgo%E7%9A%84sync.once/" />
+<meta property="article:published_time" content="2020-05-07T20:45:47+08:00" />
+<meta property="article:modified_time" content="2020-05-07T20:45:47+08:00" />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="看看go的sync.once"/>
+<meta name="twitter:description" content="用途 once保证传入内部的函数只会执行一次 once源码 type Once struct { // done indicates whether the action has been performed. // It is first in the struct because it is used in the hot path. // The hot path is inlined at every call site. // Placing done first allows"/>
+
+	<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+	<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+	<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+	<link rel="manifest" href="/site.webmanifest">
+	<link rel="mask-icon" href="/safari-pinned-tab.svg" color="">
+	<link rel="shortcut icon" href="/favicon.ico">
+
+	<title>看看go的sync.once</title>
+	<link rel="stylesheet" href="https://pyx-py.github.io/css/style.min.657bcb7af31123e4156b1a3d2ff60a636717e54ead74f882136b5114cf72b55e.css" integrity="sha256-ZXvLevMRI+QVaxo9L/YKY2cX5U6tdPiCE2tRFM9ytV4=" crossorigin="anonymous">
+	
+</head>
+
+<body id="page">
+	
+	<header id="site-header" class="animated slideInUp faster">
+		<div class="hdr-wrapper section-inner">
+			<div class="hdr-left">
+				<div class="site-branding">
+					<a href="https://pyx-py.github.io/">Y&#39;s</a>
+				</div>
+				<nav class="site-nav hide-in-mobile">
+					
+				<a href="https://pyx-py.github.io/posts/">文章</a>
+				<a href="https://pyx-py.github.io/tags/">标签</a>
+				<a href="https://pyx-py.github.io/category/">类型</a>
+				<a href="https://pyx-py.github.io/about/">关于</a>
+
+				</nav>
+			</div>
+			<div class="hdr-right hdr-icons">
+				<button id="toc-btn" class="hdr-btn desktop-only-ib" title="Table of Contents"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-list"><line x1="8" y1="6" x2="21" y2="6"></line><line x1="8" y1="12" x2="21" y2="12"></line><line x1="8" y1="18" x2="21" y2="18"></line><line x1="3" y1="6" x2="3" y2="6"></line><line x1="3" y1="12" x2="3" y2="12"></line><line x1="3" y1="18" x2="3" y2="18"></line></svg></button><span class="hdr-social hide-in-mobile"><a href="https://github.com/Pyx-py" target="_blank" rel="noopener me" title="Github"><svg xmlns="http://www.w3.org/2000/svg" class="feather" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path></svg></a></span><button id="menu-btn" class="hdr-btn" title="Menu"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-menu"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg></button>
+			</div>
+		</div>
+	</header>
+	<div id="mobile-menu" class="animated fast">
+		<ul>
+			<li><a href="https://pyx-py.github.io/posts/">文章</a></li>
+			<li><a href="https://pyx-py.github.io/tags/">标签</a></li>
+			<li><a href="https://pyx-py.github.io/category/">类型</a></li>
+			<li><a href="https://pyx-py.github.io/about/">关于</a></li>
+		</ul>
+	</div>
+
+
+	<main class="site-main section-inner animated fadeIn faster">
+		<article class="thin">
+			<header class="post-header">
+				<div class="post-meta"><span>May 7, 2020</span></div>
+				<h1>看看go的sync.once</h1>
+			</header>
+			<div class="content">
+				<h2 id="用途">用途<a href="#用途" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h2>
+<p>once保证传入内部的函数只会执行一次</p>
+<h2 id="once源码">once源码<a href="#once源码" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h2>
+<pre><code>type Once struct {
+	// done indicates whether the action has been performed.
+	// It is first in the struct because it is used in the hot path.
+	// The hot path is inlined at every call site.
+	// Placing done first allows more compact instructions on some architectures (amd64/x86),
+	// and fewer instructions (to calculate offset) on other architectures.
+	done uint32
+	m    Mutex
+}
+func (o *Once) Do(f func()) {
+	// Note: Here is an incorrect implementation of Do:
+	//
+	//	if atomic.CompareAndSwapUint32(&amp;o.done, 0, 1) {
+	//		f()
+	//	}
+	//
+	// Do guarantees that when it returns, f has finished.
+	// This implementation would not implement that guarantee:
+	// given two simultaneous calls, the winner of the cas would
+	// call f, and the second would return immediately, without
+	// waiting for the first's call to f to complete.
+	// This is why the slow path falls back to a mutex, and why
+	// the atomic.StoreUint32 must be delayed until after f returns.
+
+	if atomic.LoadUint32(&amp;o.done) == 0 {
+		// Outlined slow-path to allow inlining of the fast-path.
+		o.doSlow(f)
+	}
+}
+
+func (o *Once) doSlow(f func()) {
+	o.m.Lock()
+	defer o.m.Unlock()
+	if o.done == 0 {
+		defer atomic.StoreUint32(&amp;o.done, 1)
+		f()
+	}
+}
+</code></pre><p>源码并不长，struct内部也只有两个属性</p>
+<ol>
+<li>互斥锁</li>
+<li>计数器</li>
+</ol>
+<p>从源码能看到，会先对计数器<code>done</code>进行原子性的判断是否为0，才会调用<code>doslow</code>方法，由于锁的存在，即便同时多个<code>goroutine</code>进入<code>doslow</code>方法,也只有一个goroutine能够拿到锁，其他的会阻塞在<code>lock</code>位置 <br>
+等执行完业务函数f后，将计数器置为1，再释放锁，这个时候之前阻塞在<code>lock</code>位置的<code>goroutine</code>能够接着往下执行了，但此时<code>o.done</code>已经被改成1了，于是无法继续往下执行f函数</p>
+<h2 id="小结">小结<a href="#小结" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h2>
+<p><code>mutex</code>保证了同一时间只有一个goroutine能够执行f<br>
+<code>done</code>保证了在一个goroutine执行完f之后，其他的goroutine无法再调用f</p>
+<h2 id="后续">后续<a href="#后续" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h2>
+<p>对于once源码中出现的<code>Mutex</code>和<code>aotmic</code>还未进行深入的了解，放在后面在看吧<br>
+peace</p>
+
+			</div>
+			<hr class="post-end">
+			<footer class="post-info">
+				<p>
+					<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-tag meta-icon"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7" y2="7"></line></svg><span class="tag"><a href="https://pyx-py.github.io/tags/go">go</a></span>
+				</p>
+				<p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file-text"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>574 Words</p>
+				<p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-calendar"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>2020-05-07 20:45 &#43;0800</p>
+			</footer>
+		</article>
+		<aside id="toc">
+			<div class="toc-title">Table of Contents</div>
+			<nav id="TableOfContents">
+  <ul>
+    <li><a href="#用途">用途</a></li>
+    <li><a href="#once源码">once源码</a></li>
+    <li><a href="#小结">小结</a></li>
+    <li><a href="#后续">后续</a></li>
+  </ul>
+</nav>
+		</aside>
+		<div class="post-nav thin">
+			<a class="prev-post" href="https://pyx-py.github.io/posts/%E9%80%9A%E8%BF%87hugo%E5%88%9B%E5%BB%BA%E5%8D%9A%E5%AE%A2%E7%BD%91%E7%AB%99/">
+				<span class="post-nav-label">Older&nbsp;<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-right"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg></span><br><span>通过hugo创建博客网站</span>
+			</a>
+		</div>
+		<div id="comments" class="thin"><script src="https://utteranc.es/client.js"
+        repo="Pyx-py/Pyx-py.github.io"
+        issue-term="pathname"
+        theme="photon-dark"
+        crossorigin="anonymous"
+        async>
+</script>
+</div>
+	</main>
+
+	<footer id="site-footer" class="section-inner thin animated fadeIn faster">
+		<p>&copy; 2020 <a href="https://pyx-py.github.io/">Pyx</a> &#183; <a href="https://creativecommons.org/licenses/by-nc/4.0/" target="_blank" rel="noopener">CC BY-NC 4.0</a></p>
+		<p>
+			Made with <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> &#183; Theme <a href="https://github.com/Track3/hermit" target="_blank" rel="noopener">Hermit</a> &#183; <a href="https://pyx-py.github.io/posts/index.xml" target="_blank" title="rss"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-rss"><path d="M4 11a9 9 0 0 1 9 9"></path><path d="M4 4a16 16 0 0 1 16 16"></path><circle cx="5" cy="19" r="1"></circle></svg></a>
+		</p>
+	</footer>
+
+
+
+	<script src="https://pyx-py.github.io/js/bundle.min.4a9a0ac3d2217822c7865b4161e6c2a71de1d70492264337755427898dd718f6.js" integrity="sha256-SpoKw9IheCLHhltBYebCpx3h1wSSJkM3dVQniY3XGPY=" crossorigin="anonymous"></script>
+	
+
+</body>
+
+</html>
