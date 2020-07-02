@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>折腾 on Y&#39;s</title>
+    <link>https://pyx-py.github.io/tags/%E6%8A%98%E8%85%BE/</link>
+    <description>Recent content in 折腾 on Y&#39;s</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.</copyright>
+    <lastBuildDate>Sat, 27 Jun 2020 17:04:01 +0800</lastBuildDate>
+    
+	<atom:link href="https://pyx-py.github.io/tags/%E6%8A%98%E8%85%BE/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Linux,yes!</title>
+      <link>https://pyx-py.github.io/posts/linuxyes/</link>
+      <pubDate>Sat, 27 Jun 2020 17:04:01 +0800</pubDate>
+      
+      <guid>https://pyx-py.github.io/posts/linuxyes/</guid>
+      <description>起因 从五月份开始我的个人电脑就开始出现不断死机蓝屏无限重启情况，但是我之前一直加班比较多，所以就没管它，但是六月份加班时间少了，我在家里待着</description>
+    </item>
+    
+  </channel>
+</rss>

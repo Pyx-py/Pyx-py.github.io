@@ -13,6 +13,15 @@
     
     
     <item>
+      <title>Linux,yes!</title>
+      <link>https://pyx-py.github.io/posts/linuxyes/</link>
+      <pubDate>Sat, 27 Jun 2020 17:04:01 +0800</pubDate>
+      
+      <guid>https://pyx-py.github.io/posts/linuxyes/</guid>
+      <description>起因 从五月份开始我的个人电脑就开始出现不断死机蓝屏无限重启情况，但是我之前一直加班比较多，所以就没管它，但是六月份加班时间少了，我在家里待着</description>
+    </item>
+    
+    <item>
       <title>看看go的sync.once</title>
       <link>https://pyx-py.github.io/posts/%E7%9C%8B%E7%9C%8Bgo%E7%9A%84sync.once/</link>
       <pubDate>Thu, 07 May 2020 20:45:47 +0800</pubDate>
